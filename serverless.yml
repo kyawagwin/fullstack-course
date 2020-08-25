@@ -67,6 +67,9 @@ functions:
         method: post
         cors: true
         path: /v1/user
+        request:
+          schema:
+            application/json: ${file(src/schemas/create_user_request.json)}
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
