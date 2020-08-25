@@ -13,8 +13,8 @@
 
 service: user-service
 # app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
+app: fullstack-course
+org: kyawagwin
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -74,12 +74,12 @@ functions:
     handler: src/functions/createUser.createUser
     events:
       - http:
-        method: post
-        cors: true
-        path: /v1/user
-        request:
-          schema:
-            application/json: ${file(src/schemas/create_user_request.json)}
+          method: post
+          cors: true
+          path: /v1/user
+          request:
+            schema:
+              application/json: ${file(src/schemas/create_user_request.json)}
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
