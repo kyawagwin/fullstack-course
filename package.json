@@ -5,7 +5,9 @@
   "scripts": {
     "test": "mocha src/tests"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bcryptjs": "^2.4.3"
+  },
   "devDependencies": {
     "aws-sdk": "^2.739.0",
     "aws-sdk-mock": "^5.1.0",
