@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: fullstack-course
+service: user-service
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -26,26 +26,36 @@ provider:
 
   stage: ${opt:stage, 'dev'}
   region: ap-southeast-1
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  # you can overwrite defaults here
+  #  stage: dev
+  #  region: us-east-1
 
-# you can add statements to the Lambda function's IAM Role here
-#  iamRoleStatements:
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:ListBucket"
-#      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
-#    - Effect: "Allow"
-#      Action:
-#        - "s3:PutObject"
-#      Resource:
-#        Fn::Join:
-#          - ""
-#          - - "arn:aws:s3:::"
-#            - "Ref" : "ServerlessDeploymentBucket"
-#            - "/*"
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "dynamodb:Query"
+        - "dynamodb:PutItem"
+      Resource:
+        - "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}"
+        - "arn:aws:dynamodb:#{AWS::Region}:#{AWS::AccountId}:table/${self:custom.dynamodb.userTable}/index/pk"
+  # you can add statements to the Lambda function's IAM Role here
+  #  iamRoleStatements:
+  #    - Effect: "Allow"
+  #      Action:
+  #        - "s3:ListBucket"
+  #      Resource: { "Fn::Join" : ["", ["arn:aws:s3:::", { "Ref" : "ServerlessDeploymentBucket" } ] ]  }
+  #    - Effect: "Allow"
+  #      Action:
+  #        - "s3:PutObject"
+  #      Resource:
+  #        Fn::Join:
+  #          - ""
+  #          - - "arn:aws:s3:::"
+  #            - "Ref" : "ServerlessDeploymentBucket"
+  #            - "/*"
 
+  environment:
+    DYNAMODB_USER_TABLE: ${self:custom.dynamodb.userTable}
 # you can define service wide environment variables here
 #  environment:
 #    variable1: value1
@@ -127,6 +137,22 @@ plugins:
   - serverless-pseudo-parameters
   - serverless-mocha
 custom:
+  dynamodb:
+    userTable: ${self:service}-user-${self:provider.stage}
   serverless-mocha-plugin:
     testTemplate: templates/test-template.ejs
     functionTemplate: templates/function-template.ejs
+  resources:
+    Resources:
+      userTable:
+        Type: AWS::DynamoDB::Table
+        DeletionPolicy: Retain
+        Properties:
+          TableName: ${self:custom.dynamodb.userTable}
+          AttributeDefinitions:
+            - AttributeName: pk
+              AttributeType: S
+          KeySchema:
+            - AttributeName: pk
+              KeyType: HASH
+          BillingMode: PAY_PER_REQUEST
