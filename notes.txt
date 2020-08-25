@@ -1,0 +1,9 @@
+# create lambda function
+sls create --template aws-nodejs
+
+# install serverless plugins 
+sls plugin install --name serverless-pseudo-parameters # for cli 
+sls plugin install --name serverless-mocha # for testing
+
+# create test function
+sls create function -f testFunction --handler src/functions/testFunction.testFunction --path src/tests/
