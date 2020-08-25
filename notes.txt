@@ -5,5 +5,5 @@ sls create --template aws-nodejs
 sls plugin install --name serverless-pseudo-parameters # for cli 
 sls plugin install --name serverless-mocha # for testing
 
-# create test function
+# create function with test
 sls create function -f testFunction --handler src/functions/testFunction.testFunction --path src/tests/

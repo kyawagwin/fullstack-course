@@ -60,10 +60,14 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  testFunction:
-    handler: src/functions/testFunction.testFunction
-  hello:
-    handler: src/functions/handler.hello
+  createUser:
+    handler: src/functions/createUser.createUser
+    events:
+      - http:
+        method: post
+        cors: true
+        path: /v1/user
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
