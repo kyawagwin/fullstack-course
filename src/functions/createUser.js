@@ -31,12 +31,4 @@ module.exports.createUser = async (event, context) => {
     console.log("newUserParams", newUserParams);
     return new Error("There was an error putting the new item");
   }
-
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: "Go Serverless v1.0! Your function executed successfully!",
-      input: event,
-    }),
-  };
 };
